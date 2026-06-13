@@ -1,0 +1,16 @@
+# Block Visual Studio tracking completely
+.vs/
+**/.vs/*
+*.slnx
+
+# Block all build outputs anywhere in the project tree
+[Bb]in/
+[Oo]bj/
+**/bin/*
+**/obj/*
+
+# Block user and cache data
+*.user
+*.suo
+*.cache
+*.json.cache
