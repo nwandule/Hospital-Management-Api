@@ -167,3 +167,6 @@ C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-syste
 C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-system\Hospital-Management-system\obj\Debug\net10.0\ref\Hospital-Management-system.dll
 C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-system\Hospital-Management-system\bin\Debug\net10.0\BCrypt-Net-Next.dll
 C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-system\Hospital-Management-system\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-system\Hospital-Management-system\bin\Debug\net10.0\Castle.Core.dll
+C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-system\Hospital-Management-system\bin\Debug\net10.0\FluentAssertions.dll
+C:\Users\ripfu\Desktop\Project\Hospital-Management-Api\Hospital-Management-system\Hospital-Management-system\bin\Debug\net10.0\Moq.dll
