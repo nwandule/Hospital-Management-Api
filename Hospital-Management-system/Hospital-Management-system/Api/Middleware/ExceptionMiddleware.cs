@@ -1,4 +1,9 @@
-﻿using Hospital_Management_system.Api.ErrorHandling;
+﻿/*=============================================================================
+ * Author:       Vikash
+ * Description:  Global exception interceptor middleware. Catches unhandled 
+ * service exceptions and returns clean, structured JSON payloads.
+ *=============================================================================*/
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 
@@ -7,12 +12,10 @@ namespace Hospital_Management_system.Api.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+        public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -23,7 +26,6 @@ namespace Hospital_Management_system.Api.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unhandled exception occurred.");
                 await HandleExceptionAsync(context, ex);
             }
         }
@@ -32,26 +34,30 @@ namespace Hospital_Management_system.Api.Middleware
         {
             context.Response.ContentType = "application/json";
 
-            // Default to 500 Internal Server Error
-            var statusCode = HttpStatusCode.InternalServerError;
-            var message = "An internal server error occurred.";
-
-            // Map custom exceptions to specific HTTP status codes
-            if (exception is NotFoundException)
+            // 🟢 Determine the correct HTTP Status Code based on the exception type
+            if (exception is UnauthorizedAccessException)
             {
-                statusCode = HttpStatusCode.NotFound;
-                message = exception.Message;
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized; // 401
             }
             else if (exception is ArgumentException)
             {
-                statusCode = HttpStatusCode.BadRequest;
-                message = exception.Message;
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest; // 400
+            }
+            else
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; // 500
             }
 
-            context.Response.StatusCode = (int)statusCode;
+            // Create a structured error response payload
+            var response = new
+            {
+                statusCode = context.Response.StatusCode,
+                message = exception.Message,
+                detailed = exception.InnerException?.Message // Optional tracking
+            };
 
-            var response = new { code = context.Response.StatusCode, message = message };
-            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            var jsonResult = JsonSerializer.Serialize(response);
+            return context.Response.WriteAsync(jsonResult);
         }
-}
+    }
 }

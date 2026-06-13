@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "Hospital_Management_system.Api.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Hospital_Management_system.Models.Dto.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hospital_Management_system.Api.Controllers.AuthController",
+    "Method": "RegisterPatient",
+    "RelativePath": "api/auth/register-patient",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Hospital_Management_system.Models.Dto.RegisterPatientDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Hospital_Management_system.Api.Controllers.PatientController",
     "Method": "Create",
     "RelativePath": "api/patients",
