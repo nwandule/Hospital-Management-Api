@@ -19,12 +19,10 @@ namespace Hospital_Management_system.Database.Entities
            
         }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // 🟢 This single line automatically scans your whole project assembly 
-            // and applies any configuration files inside your new Configurations folder!
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
