@@ -1,0 +1,18 @@
+2026-06-15 15:55:23.869 +02:00 [INF] Starting up the Hospital Management API...
+2026-06-15 15:58:00.554 +02:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-15 15:58:00.806 +02:00 [INF] Processing registration request for email: tikng@gmail.com
+2026-06-15 15:58:09.942 +02:00 [INF] Patient registered successfully with email: tikng@gmail.com
+2026-06-15 15:58:57.114 +02:00 [INF] Login attempt received for email: tikng@gmail.com
+2026-06-15 15:58:58.269 +02:00 [INF] User logged in successfully: tikng@gmail.com
+2026-06-15 16:32:43.006 +02:00 [INF] Starting up the Hospital Management API...
+2026-06-15 16:36:32.452 +02:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-15 16:37:07.884 +02:00 [INF] Creating a new patient record.
+2026-06-15 16:37:10.107 +02:00 [INF] Patient record successfully created with ID: 2001
+2026-06-15 16:38:51.392 +02:00 [INF] Creating a new patient record.
+2026-06-15 16:38:51.641 +02:00 [INF] Patient record successfully created with ID: 2002
+2026-06-15 16:40:01.248 +02:00 [INF] Retrieving all patient records.
+2026-06-15 16:40:02.047 +02:00 [INF] Successfully retrieved 5 patient records.
+2026-06-15 16:40:12.857 +02:00 [INF] Retrieving all patient records.
+2026-06-15 16:40:12.873 +02:00 [INF] Successfully retrieved 5 patient records.
+2026-06-15 16:40:49.584 +02:00 [INF] Fetching patient record for ID: 2
+2026-06-15 16:40:49.922 +02:00 [INF] Successfully retrieved patient record for ID: 2

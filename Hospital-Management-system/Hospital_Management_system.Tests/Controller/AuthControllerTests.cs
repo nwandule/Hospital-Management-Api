@@ -5,25 +5,28 @@
  * Created Date: June 2026
  *=============================================================================*/
 
-using Microsoft.AspNetCore.Mvc;
-using Moq;
 using FluentAssertions;
-using Xunit;
-using Hospital_Management_system.Services.AuthRepository;
 using Hospital_Management_system.Api.Controllers;
 using Hospital_Management_system.Models.Dto;
+using Hospital_Management_system.Services.AuthRepository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Xunit;
 
 namespace Hospital_Management_system.Tests.Controllers
 {
     public class AuthControllerTests
     {
         private readonly Mock<IAuthService> _authServiceMock;
+        private readonly Mock<ILogger<AuthController>> _loggerMock;
         private readonly AuthController _controller;
 
         public AuthControllerTests()
         {
             _authServiceMock = new Mock<IAuthService>();
-            _controller = new AuthController(_authServiceMock.Object);
+            _loggerMock = new Mock<ILogger<AuthController>>();
+            _controller = new AuthController(_authServiceMock.Object, _loggerMock.Object);
         }
 
         [Fact]
