@@ -11,9 +11,9 @@ namespace Hospital_Management_system.Services.CommonRepository
 {
     public interface ICommonRepository<T> where T : class
     {
-        T GetById(int id);
-        List<T> GetAll();
-        T Add(T entity);
-        bool Exists(Expression<Func<T, bool>> predicate);
+        Task<T> GetByIdAsync(int id);
+        Task<List<T>> GetAllAsync();
+        Task<T> AddAsync(T entity);
+        Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
     }
 }

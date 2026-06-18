@@ -14,3 +14,20 @@
 2026-06-18 10:33:24.175 +02:00 [INF] Fetching doctor record for ID: 1
 2026-06-18 10:33:33.465 +02:00 [INF] Fetching doctor record for ID: 2
 2026-06-18 10:33:33.618 +02:00 [WRN] Doctor record with ID: 2 was not found.
+2026-06-18 14:53:50.928 +02:00 [INF] Starting up the Hospital Management API...
+2026-06-18 14:55:46.382 +02:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-18 14:55:46.816 +02:00 [INF] Creating a new doctor record for: Andzain1@gmail.com
+2026-06-18 14:55:52.296 +02:00 [INF] Doctor profile successfully created with ID: 6
+2026-06-18 14:57:03.168 +02:00 [INF] Creating a new doctor record for: Andzain1@gmail.com
+2026-06-18 14:57:03.322 +02:00 [WRN] Creation rejected. A doctor record with email Andzain1@gmail.com already exists.
+2026-06-18 14:57:18.688 +02:00 [INF] Creating a new doctor record for: Andzain12@gmail.com
+2026-06-18 14:57:18.810 +02:00 [INF] Doctor profile successfully created with ID: 7
+2026-06-18 14:58:02.289 +02:00 [INF] Retrieving all registered doctors.
+2026-06-18 14:58:02.710 +02:00 [INF] Successfully retrieved 5 doctor records.
+2026-06-18 14:58:47.380 +02:00 [INF] Fetching doctor record for ID: 6
+2026-06-18 14:59:57.972 +02:00 [INF] Creating a new patient record for: Vikash23@gmail.com
+2026-06-18 14:59:59.046 +02:00 [INF] Patient record successfully created with ID: 3
+2026-06-18 15:00:15.403 +02:00 [INF] Retrieving all patient records.
+2026-06-18 15:00:15.510 +02:00 [INF] Successfully retrieved 3 patient records.
+2026-06-18 15:00:27.177 +02:00 [INF] Fetching patient record for ID: 1
+2026-06-18 15:00:27.477 +02:00 [INF] Successfully retrieved patient record for ID: 1
