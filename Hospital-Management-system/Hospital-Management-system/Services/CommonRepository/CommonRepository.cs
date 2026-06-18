@@ -7,6 +7,7 @@
  *=============================================================================*/
 using Hospital_Management_system.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Hospital_Management_system.Services.CommonRepository
 {
@@ -36,6 +37,10 @@ namespace Hospital_Management_system.Services.CommonRepository
         {
             // Find searches the primary key directly in memory first, then queries the DB
             return _dbSet.Find(id);
+        }
+        public bool Exists(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Any(predicate);
         }
     }
 }

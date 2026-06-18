@@ -22,6 +22,50 @@ namespace Hospital_Management_system.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Hospital_Management_system.Models.Domain.Doctor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsAvailable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Specialization")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Doctors", (string)null);
+                });
+
             modelBuilder.Entity("Hospital_Management_system.Models.Domain.Patient", b =>
                 {
                     b.Property<int>("Id")
@@ -109,7 +153,7 @@ namespace Hospital_Management_system.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 10,
                             CreatedAt = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@hospital.com",
                             PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w3",
@@ -117,7 +161,7 @@ namespace Hospital_Management_system.Database.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 20,
                             CreatedAt = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "nurse.admin@hospital.com",
                             PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w4",
@@ -125,7 +169,7 @@ namespace Hospital_Management_system.Database.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 30,
                             CreatedAt = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "hr@hospital.com",
                             PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w5",
@@ -133,7 +177,7 @@ namespace Hospital_Management_system.Database.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 40,
                             CreatedAt = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "doctor@hospital.com",
                             PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w6",
@@ -141,7 +185,7 @@ namespace Hospital_Management_system.Database.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 50,
                             CreatedAt = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "patient.test@gmail.com",
                             PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w7",

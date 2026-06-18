@@ -46,7 +46,7 @@ namespace Hospital_Management_system.Database.Configurations
             builder.HasData(
                 new User
                 {
-                    Id = 1,
+                    Id = 10,
                     Email = "admin@hospital.com",
                     PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w3", // Password: AdminRoot2026!
                     Role = "Admin",
@@ -54,7 +54,7 @@ namespace Hospital_Management_system.Database.Configurations
                 },
                 new User
                 {
-                    Id = 2,
+                    Id = 20,
                     Email = "nurse.admin@hospital.com",
                     PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w4", // Password: NurseRoot2026!
                     Role = "Admin", // Operating with Full Administrative Privileges
@@ -62,7 +62,7 @@ namespace Hospital_Management_system.Database.Configurations
                 },
                 new User
                 {
-                    Id = 3,
+                    Id = 30,
                     Email = "hr@hospital.com",
                     PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w5", // Password: HrRoot2026!
                     Role = "HR",
@@ -70,7 +70,7 @@ namespace Hospital_Management_system.Database.Configurations
                 },
                 new User
                 {
-                    Id = 4,
+                    Id = 40,
                     Email = "doctor@hospital.com",
                     PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w6", // Password: DoctorRoot2026!
                     Role = "Doctor",
@@ -78,7 +78,7 @@ namespace Hospital_Management_system.Database.Configurations
                 },
                 new User
                 {
-                    Id = 5,
+                    Id = 50,
                     Email = "patient.test@gmail.com",
                     PasswordHash = "$2a$11$K7E6UfXwTz7zVbF3g3iOee9GzZf1gV2m3n4o5p6q7r8s9t0u1v2w7", // Password: PatientTest2026!
                     Role = "Patient",
