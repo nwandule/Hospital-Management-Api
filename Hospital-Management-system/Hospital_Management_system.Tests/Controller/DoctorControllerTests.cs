@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using FluentAssertions;
 using Hospital_Management_system.Api.Controllers;
 using Hospital_Management_system.Models.Domain;
@@ -10,7 +11,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Hospital_Management_system.Tests.Controller
 {
@@ -32,7 +34,6 @@ namespace Hospital_Management_system.Tests.Controller
         [Fact]
         public async Task Create_ShouldReturnCreatedAtAction_WhenDoctorIsCreatedSuccessfully()
         {
-            // Arrange
             var dto = new CreateDoctorDto
             {
                 FullName = "Dr. Jane Doe",
@@ -70,25 +71,23 @@ namespace Hospital_Management_system.Tests.Controller
             };
 
             _doctorServiceMock
-                .Setup(s => s.Exists(It.IsAny<Expression<Func<Doctor, bool>>>()))
-                .Returns(false);
+                .Setup(s => s.ExistsAsync(It.IsAny<Expression<Func<Doctor, bool>>>()))
+                .ReturnsAsync(false);
 
             _mapperMock
                 .Setup(m => m.Map<Doctor>(dto))
                 .Returns(domainModel);
 
             _doctorServiceMock
-                .Setup(s => s.Add(domainModel))
-                .Returns(serviceResult);
+                .Setup(s => s.AddAsync(domainModel))
+                .ReturnsAsync(serviceResult);
 
             _mapperMock
                 .Setup(m => m.Map<DoctorResponseDto>(serviceResult))
                 .Returns(responseDto);
 
-            // Act
             var result = await _controller.Create(dto);
 
-            // Assert
             var createdAtActionResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
             createdAtActionResult.ActionName.Should().Be(nameof(DoctorController.GetById));
             createdAtActionResult.RouteValues["id"].Should().Be(1);
@@ -98,7 +97,6 @@ namespace Hospital_Management_system.Tests.Controller
         [Fact]
         public async Task Create_ShouldReturnConflict_WhenEmailAlreadyExists()
         {
-            // Arrange
             var dto = new CreateDoctorDto
             {
                 FullName = "Dr. Jane Doe",
@@ -106,13 +104,11 @@ namespace Hospital_Management_system.Tests.Controller
             };
 
             _doctorServiceMock
-                .Setup(s => s.Exists(It.IsAny<Expression<Func<Doctor, bool>>>()))
-                .Returns(true);
+                .Setup(s => s.ExistsAsync(It.IsAny<Expression<Func<Doctor, bool>>>()))
+                .ReturnsAsync(true);
 
-            // Act
             var result = await _controller.Create(dto);
 
-            // Assert
             var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
             conflictResult.Value.Should().BeEquivalentTo(new { message = "A doctor with this email address already exists within the system." });
         }
@@ -120,7 +116,6 @@ namespace Hospital_Management_system.Tests.Controller
         [Fact]
         public async Task GetById_ShouldReturnOk_WhenDoctorExists()
         {
-            // Arrange
             int doctorId = 1;
             var domainModel = new Doctor
             {
@@ -142,17 +137,15 @@ namespace Hospital_Management_system.Tests.Controller
             };
 
             _doctorServiceMock
-                .Setup(s => s.GetById(doctorId))
-                .Returns(domainModel);
+                .Setup(s => s.GetByIdAsync(doctorId))
+                .ReturnsAsync(domainModel);
 
             _mapperMock
                 .Setup(m => m.Map<DoctorResponseDto>(domainModel))
                 .Returns(responseDto);
 
-            // Act
             var result = await _controller.GetById(doctorId);
 
-            // Assert
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.Value.Should().BeEquivalentTo(responseDto);
         }
@@ -160,24 +153,20 @@ namespace Hospital_Management_system.Tests.Controller
         [Fact]
         public async Task GetById_ShouldReturnNotFound_WhenDoctorDoesNotExist()
         {
-            // Arrange
             int doctorId = 999;
 
             _doctorServiceMock
-                .Setup(s => s.GetById(doctorId))
-                .Returns((Doctor)null!);
+                .Setup(s => s.GetByIdAsync(doctorId))
+                .ReturnsAsync((Doctor?)null);
 
-            // Act
             var result = await _controller.GetById(doctorId);
 
-            // Assert
             result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
         public async Task GetAll_ShouldReturnOk_WhenDoctorsAreRetrieved()
         {
-            // Arrange
             var domainList = new List<Doctor>
             {
                 new Doctor { Id = 1, FullName = "Dr. One", Email = "one@hospital.com", Specialization = "General" },
@@ -191,19 +180,18 @@ namespace Hospital_Management_system.Tests.Controller
             };
 
             _doctorServiceMock
-                .Setup(s => s.GetAll())
-                .Returns(domainList);
+                .Setup(s => s.GetAllAsync())
+                .ReturnsAsync(domainList);
 
             _mapperMock
                 .Setup(m => m.Map<IEnumerable<DoctorResponseDto>>(domainList))
                 .Returns(responseList);
 
-            // Act
             var result = await _controller.GetAll();
 
-            // Assert
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.Value.Should().BeEquivalentTo(responseList);
         }
     }
 }
+

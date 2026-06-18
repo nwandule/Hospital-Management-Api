@@ -19,28 +19,29 @@ namespace Hospital_Management_system.Services.CommonRepository
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context;
-            _dbSet = _context.Set<T>(); // Dynamically fetches the correct DbSet (e.g., Patients)
+            _dbSet = _context.Set<T>();
         }
-        public T Add(T entity)
+
+        public async Task<T> AddAsync(T entity)
         {
-            _dbSet.Add(entity);
-            _context.SaveChanges(); // Persists changes into SQL Server instantly
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public List<T> GetAll()
+        public async Task<List<T>> GetAllAsync()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            // Find searches the primary key directly in memory first, then queries the DB
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
-        public bool Exists(Expression<Func<T, bool>> predicate)
+
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.Any(predicate);
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }

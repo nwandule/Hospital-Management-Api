@@ -13,8 +13,9 @@ namespace Hospital_Management_system.Api.Controllers
     {
         private readonly IPatientService _patientService;
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
-        public PatientController(IPatientService patientService, IMapper mapper, ILogger<AuthController> logger)
+        private readonly ILogger<PatientController> _logger;
+
+        public PatientController(IPatientService patientService, IMapper mapper, ILogger<PatientController> logger)
         {
             _patientService = patientService;
             _mapper = mapper;
@@ -22,14 +23,23 @@ namespace Hospital_Management_system.Api.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status201Created, Type = typeof(PatientResponseDto))]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
-        public IActionResult Create([FromBody] CreatePatient dto)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PatientResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Create([FromBody] CreatePatient dto)
         {
-            _logger.LogInformation("Creating a new patient record.");
+            _logger.LogInformation("Creating a new patient record for: {Email}", dto.Email);
+
+            bool emailExists = await _patientService.ExistsAsync(p => p.Email == dto.Email);
+            if (emailExists)
+            {
+                _logger.LogWarning("Creation rejected. A patient record with email {Email} already exists.", dto.Email);
+                return Conflict(new { message = "A patient with this email address already exists within the system." });
+            }
+
             var newPatient = _mapper.Map<Patient>(dto);
-            var result = _patientService.Add(newPatient);
+            var result = await _patientService.AddAsync(newPatient);
             var responseDto = _mapper.Map<PatientResponseDto>(result);
 
             _logger.LogInformation("Patient record successfully created with ID: {PatientId}", responseDto.Id);
@@ -37,14 +47,14 @@ namespace Hospital_Management_system.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK, Type = typeof(PatientResponseDto))]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
-        public IActionResult GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PatientResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetById(int id)
         {
             _logger.LogInformation("Fetching patient record for ID: {PatientId}", id);
 
-            var patient = _patientService.GetById(id);
+            var patient = await _patientService.GetByIdAsync(id);
             if (patient == null)
             {
                 _logger.LogWarning("Patient record with ID: {PatientId} was not found.", id);
@@ -56,13 +66,13 @@ namespace Hospital_Management_system.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK, Type = typeof(IEnumerable<PatientResponseDto>))]
-        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
-        public IActionResult GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PatientResponseDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAll()
         {
             _logger.LogInformation("Retrieving all patient records.");
 
-            var patients = _patientService.GetAll();
+            var patients = await _patientService.GetAllAsync();
 
             _logger.LogInformation("Successfully retrieved {Count} patient records.", patients.Count());
 

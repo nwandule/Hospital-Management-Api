@@ -7,6 +7,9 @@ using Hospital_Management_system.Services.PatientRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Hospital_Management_system.Tests.Controllers
@@ -15,21 +18,20 @@ namespace Hospital_Management_system.Tests.Controllers
     {
         private readonly Mock<IPatientService> _patientServiceMock;
         private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<ILogger<AuthController>> _loggerMock;
+        private readonly Mock<ILogger<PatientController>> _loggerMock;
         private readonly PatientController _controller;
 
         public PatientControllerTests()
         {
             _patientServiceMock = new Mock<IPatientService>();
             _mapperMock = new Mock<IMapper>();
-            _loggerMock = new Mock<ILogger<AuthController>>();
+            _loggerMock = new Mock<ILogger<PatientController>>();
             _controller = new PatientController(_patientServiceMock.Object, _mapperMock.Object, _loggerMock.Object);
         }
 
         [Fact]
-        public void Create_ShouldReturnCreatedAtAction_WhenPatientIsCreatedSuccessfully()
+        public async Task Create_ShouldReturnCreatedAtAction_WhenPatientIsCreatedSuccessfully()
         {
-            // Arrange
             var dto = new CreatePatient
             {
                 FullName = "John Doe",
@@ -56,22 +58,24 @@ namespace Hospital_Management_system.Tests.Controllers
                 Email = "john.doe@hospital.com"
             };
 
+            _patientServiceMock
+                .Setup(s => s.ExistsAsync(It.IsAny<Expression<Func<Patient, bool>>>()))
+                .ReturnsAsync(false);
+
             _mapperMock
                 .Setup(m => m.Map<Patient>(dto))
                 .Returns(domainModel);
 
             _patientServiceMock
-                .Setup(s => s.Add(domainModel))
-                .Returns(serviceResult);
+                .Setup(s => s.AddAsync(domainModel))
+                .ReturnsAsync(serviceResult);
 
             _mapperMock
                 .Setup(m => m.Map<PatientResponseDto>(serviceResult))
                 .Returns(responseDto);
 
-            // Act
-            var result = _controller.Create(dto);
+            var result = await _controller.Create(dto);
 
-            // Assert
             var createdAtActionResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
             createdAtActionResult.ActionName.Should().Be(nameof(PatientController.GetById));
             createdAtActionResult.RouteValues["id"].Should().Be(1);
@@ -79,9 +83,27 @@ namespace Hospital_Management_system.Tests.Controllers
         }
 
         [Fact]
-        public void GetById_ShouldReturnOk_WhenPatientExists()
+        public async Task Create_ShouldReturnConflict_WhenEmailAlreadyExists()
         {
-            // Arrange
+            var dto = new CreatePatient
+            {
+                FullName = "John Doe",
+                Email = "john.doe@hospital.com"
+            };
+
+            _patientServiceMock
+                .Setup(s => s.ExistsAsync(It.IsAny<Expression<Func<Patient, bool>>>()))
+                .ReturnsAsync(true);
+
+            var result = await _controller.Create(dto);
+
+            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
+            conflictResult.Value.Should().BeEquivalentTo(new { message = "A patient with this email address already exists within the system." });
+        }
+
+        [Fact]
+        public async Task GetById_ShouldReturnOk_WhenPatientExists()
+        {
             int patientId = 1;
             var domainModel = new Patient
             {
@@ -98,42 +120,36 @@ namespace Hospital_Management_system.Tests.Controllers
             };
 
             _patientServiceMock
-                .Setup(s => s.GetById(patientId))
-                .Returns(domainModel);
+                .Setup(s => s.GetByIdAsync(patientId))
+                .ReturnsAsync(domainModel);
 
             _mapperMock
                 .Setup(m => m.Map<PatientResponseDto>(domainModel))
                 .Returns(responseDto);
 
-            // Act
-            var result = _controller.GetById(patientId);
+            var result = await _controller.GetById(patientId);
 
-            // Assert
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.Value.Should().BeEquivalentTo(responseDto);
         }
 
         [Fact]
-        public void GetById_ShouldReturnNotFound_WhenPatientDoesNotExist()
+        public async Task GetById_ShouldReturnNotFound_WhenPatientDoesNotExist()
         {
-            // Arrange
             int patientId = 999;
 
             _patientServiceMock
-                .Setup(s => s.GetById(patientId))
-                .Returns((Patient)null);
+                .Setup(s => s.GetByIdAsync(patientId))
+                .ReturnsAsync((Patient?)null);
 
-            // Act
-            var result = _controller.GetById(patientId);
+            var result = await _controller.GetById(patientId);
 
-            // Assert
             result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
-        public void GetAll_ShouldReturnOk_WhenPatientsAreRetrieved()
+        public async Task GetAll_ShouldReturnOk_WhenPatientsAreRetrieved()
         {
-            // Arrange
             var domainList = new List<Patient>
             {
                 new Patient { Id = 1, FullName = "John Doe", Email = "john@hospital.com" },
@@ -147,17 +163,15 @@ namespace Hospital_Management_system.Tests.Controllers
             };
 
             _patientServiceMock
-                .Setup(s => s.GetAll())
-                .Returns(domainList);
+                .Setup(s => s.GetAllAsync())
+                .ReturnsAsync(domainList);
 
             _mapperMock
                 .Setup(m => m.Map<IEnumerable<PatientResponseDto>>(domainList))
                 .Returns(responseList);
 
-            // Act
-            var result = _controller.GetAll();
+            var result = await _controller.GetAll();
 
-            // Assert
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.Value.Should().BeEquivalentTo(responseList);
         }
