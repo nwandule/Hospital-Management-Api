@@ -15,6 +15,7 @@ using System.Text;
 using Serilog;
 using Serilog.Events;
 using Microsoft.ApplicationInsights.Extensibility;
+using Hospital_Management_system.Services.DoctorRepository;
 
 // 🟢 ADDED: Initial bootstrap logging configuration
 Log.Logger = new LoggerConfiguration()
@@ -53,6 +54,7 @@ try
 
     builder.Services.AddScoped<IPatientService, PatientService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<IDoctorService, DoctorService>();
 
     // Configure AutoMapper explicitly via configuration action
     builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());

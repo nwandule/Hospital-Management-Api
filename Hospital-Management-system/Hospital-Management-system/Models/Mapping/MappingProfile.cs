@@ -12,6 +12,8 @@ namespace Hospital_Management_system.Models.Mapping
             CreateMap<CreatePatient, Patient>();
 
             CreateMap<Patient, PatientResponseDto>();
+            CreateMap<CreateDoctorDto, Doctor>();
+            CreateMap<Doctor, DoctorResponseDto>();
 
             CreateMap<RegisterPatientDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
