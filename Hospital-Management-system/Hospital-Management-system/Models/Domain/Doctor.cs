@@ -1,11 +1,4 @@
-﻿/*=============================================================================
- * Author:       Vikash
- * Description:  Core Domain Model representing a Doctor entity. Defines the 
- * official structure and schema blueprint for doctor records as 
- * they are persisted dynamically within the SQL database.
- * Created Date: June 2026
- *=============================================================================*/
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Hospital_Management_system.Models.Domain
 {
@@ -29,5 +22,8 @@ namespace Hospital_Management_system.Models.Domain
         public bool IsAvailable { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

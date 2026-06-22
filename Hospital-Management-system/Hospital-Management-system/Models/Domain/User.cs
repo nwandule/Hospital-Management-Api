@@ -1,11 +1,4 @@
-﻿/*=============================================================================
- * Author:       Vikash
- * Description:  Core Domain Model representing a User entity. Defines the 
- * official structure and schema blueprint for User records as 
- * they are persisted dynamically within the SQL database.
- * Created Date: June 2026
- *=============================================================================*/
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Hospital_Management_system.Models.Domain
 {
@@ -24,5 +17,8 @@ namespace Hospital_Management_system.Models.Domain
         public string Role { get; set; } = "Patient";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public Patient? Patient { get; set; }
+        public Doctor? Doctor { get; set; }
     }
 }
